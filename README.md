@@ -42,3 +42,11 @@ Go to Tools->Options->Embedded->Build Tools and look at the Compiler and Assembl
 You may have to change the Standard setting in the Project->XC8 Global Options box to C90 and back to c99 to see the effect of the new setting when you re-compile.  (Maybe even exit the IDE and restart.)
 
 Bottom line: Once I got it to use xc8-cc, things went smoothly.
+
+## Problem with VDD not found
+Go to File > Project Properties
+Choose PicKit3 then in the Combox select Power then tick the "Power target circuit from PicKit3" and choose 3,375 V
+
+# Component
+
+[BLE module HM10 CC2541](BLE_Module.md)
