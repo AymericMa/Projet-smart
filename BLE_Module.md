@@ -18,3 +18,24 @@
 | Set module connect remote device timeout value  | AT+TCON? AT+TCON[para1]      | OK+TCON:[para1] OK+Set:[para1] |                                                                                                                                                                     |
 | Switch Remote Control Mode to Transmission Mode | AT+START                     | OK+START                       | None                                                                                                                                                                |
 | Set Module Power                                | AT+POWE?  AT+ POWE [para1]   | OK+Get:[para1] OK+Set:[para1]  | Para: 0 ~ 3 0: -23dbm 1: -6dbm 2: 0dbm 3: 6dbm Default: 2                                                                                                           |
+
+# BLE connection to module
+First find the BLE module :
+`bluetoothctl`
+`scan on`
+`connect D0:FF:50:74:14:B3`
+
+Then open a link to rfcomm in another terminal:
+`scan on`
+`sudo rfcomm bind 0 D0:FF:50:74:14:B3`
+
+To test use :
+`ls /dev/rfcomm0`
+
+When you have finish:
+`rfcomm release 0`
+
+Go to bluetooth terminal:
+
+`disconnect`
+`quit`
