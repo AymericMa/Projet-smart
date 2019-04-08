@@ -13,7 +13,7 @@
 // CONFIG2
 #pragma config MCLRE = ON    // Master Clear Enable bit->MCLR/VPP pin function is MCLR; Weak pull-up enabled
 #pragma config PWRTE = OFF    // Power-up Timer Enable bit->PWRT disabled
-#pragma config WDTE = ON   // Watchdog Timer Enable bits->WDT enabled; SWDTEN 
+#pragma config WDTE = OFF   // Watchdog Timer Enable bits->WDT enabled; SWDTEN 
 #pragma config LPBOREN = OFF    // Low-power BOR enable bit->ULPBOR disabled
 #pragma config BOREN = ON    // Brown-out Reset Enable bits->Brown-out Reset enabled, SBOREN bit ignored
 #pragma config BORV = LOW    // Brown-out Reset Voltage selection bit->Brown-out voltage (Vbor) set to 2.45V
@@ -53,21 +53,29 @@ void main()
     
     SYSTEM_Initialize();
     __delay_ms(2000);
-    InitBME280andPowerDown();
+    
+    EnableRXInterupts();
+    EnableGlobalinterupts();
+    EnablePeripheralInterupts();
+    // IOCANbits.IOCAN5 = 1;
+    
+    // InitBME280andPowerDown();
 
-    
-    
     
      PORTCbits.RC3 = 0 ;  
    // CLRWDT();
-   // SLEEP();
+    //SLEEP();
    
 
         
 
 	while(1)
 	{
+        UART1_SendStr("Je suis dans la boucle while\n");
+        __delay_ms(2000);
+
         CLRWDT();
+        /*
         Bme280_OneMeasure(&temperature,&humidity,&pressure);
     
     
@@ -77,12 +85,11 @@ void main()
         AddTXfloat(humidity);
         AddTXfloat(pressure);
   
-        PushDataInTheAir();
-        
-        SLEEP();// go dodo , le watchdog doit nous reveiller dans 8 secondes
-   
-         
-       
+        PushDataInTheAir();*/
+            
+       CPUDOZEbits.IDLEN = 1;
+       SLEEP();// go dodo , le watchdog doit nous reveiller dans 8 secondes
+
      //  printf("Lux : %d \r\n",LireLux(1));
      
     /*   PORTCbits.RC3 = 1 ; 
