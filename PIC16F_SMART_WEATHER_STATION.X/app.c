@@ -75,7 +75,8 @@ void AddTXAddr(uint8_t *addr)
 
 void PushDataInTheAir(void)
 {
-  /*  nrf24_send(TXbuffer.data,1);        
+    /*
+    nrf24_send(TXbuffer.data,1);        
     TXbuffer.len = 0 ;   
         uint8_t temp ;
         while(nrf24_isSending(1));

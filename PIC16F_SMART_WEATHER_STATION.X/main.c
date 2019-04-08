@@ -47,7 +47,7 @@ uint8_t rx_address1[5] = {0xD7,0xD5,0xD7,0xD7,0xD7};
 
 uint8_t device_address[5] = {0xAA,0xBB,0xCC,0xDD,0xEE};
 
-
+uint16_t luxValue;
 void main()
 {
     
@@ -66,29 +66,24 @@ void main()
    // CLRWDT();
     //SLEEP();
    
-
+    TSL2561_write8(TSL2561_REGISTER_LUX,POWER_ON);
         
 
 	while(1)
 	{
+        __delay_ms(1000);
         UART1_SendStr("Je suis dans la boucle while\n");
-        __delay_ms(2000);
-
+        
+        
+        luxValue = TSL2561_read16(TSL2561_COMMAND_BIT | TSL2561_WORD_BIT | TSL2561_REGISTER_CHAN1_LOW);
+        printf("Lux : %d \r\n",luxValue);
+        UART1_SendHex(luxValue);
         CLRWDT();
-        /*
-        Bme280_OneMeasure(&temperature,&humidity,&pressure);
-    
-    
-       //prepare the trame
-        AddTXAddr(device_address);
-        AddTXfloat(temperature);
-        AddTXfloat(humidity);
-        AddTXfloat(pressure);
-  
-        PushDataInTheAir();*/
+        //Bme280_OneMeasure(&temperature,&humidity,&pressure);
+
             
        CPUDOZEbits.IDLEN = 1;
-       SLEEP();// go dodo , le watchdog doit nous reveiller dans 8 secondes
+       //SLEEP();// go dodo , le watchdog doit nous reveiller dans 8 secondes
 
      //  printf("Lux : %d \r\n",LireLux(1));
      

@@ -2,6 +2,7 @@
 #include <xc.h> // include processor files 
 #include "interupt.h"
 #include "bme280.h"
+#include "tsl2561.h"
 
 
 typedef struct { 

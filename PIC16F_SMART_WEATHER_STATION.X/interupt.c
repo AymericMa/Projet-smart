@@ -5,6 +5,7 @@
 
 extern buffer monBuffer ;
 unsigned char RX_byte ;
+uint16_t luxValue;
 
 inline void EnableGlobalinterupts(void)
 {
@@ -39,8 +40,15 @@ inline void DisableRXInterupts(void)
 
 void __interrupt() interupt1(void)
 {
+    UART1_SendStr("coucou prout!!!\n");
     if(PIR1bits.RCIF) // si ils'agit d'une interuption RX
     {
+       //---------------------------------------------------------------
+       TSL2561_write8(TSL2561_REGISTER_LUX,POWER_ON);
+       luxValue = TSL2561_read16(TSL2561_REGISTER_LUX);
+       UART1_SendStr("coucou interruption!!!\n");
+       UART1_SendDec(luxValue);
+       //---------------------------------------------------------------
        RX_byte = EUSART_Read();
        if(RX_byte == 0x0D) // si le caractere est "entrée"
        {

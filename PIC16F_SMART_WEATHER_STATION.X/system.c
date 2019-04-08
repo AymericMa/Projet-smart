@@ -12,7 +12,7 @@ void SYSTEM_Initialize(void)
     OSCILLATOR_Initialize();
     // WDT_Initialize();
     EUSART_Initialize();
-    // I2C_Master_Init(100000);
+    I2C_Master_Init(100000);
 /*#ifndef SOFT
   spiInit(SPI_MASTER_OSC_DIV4,SPI_DATA_SAMPLE_MIDDLE,SPI_CLOCK_IDLE_LOW,SPI_ACTIVE_2_IDLE);
 #endif*/
