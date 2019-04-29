@@ -44,13 +44,18 @@ void __interrupt() interupt1(void)
     if(PIR1bits.RCIF) // si ils'agit d'une interuption RX
     {
        //---------------------------------------------------------------
-       TSL2561_write8(TSL2561_REGISTER_LUX,POWER_ON);
-       luxValue = TSL2561_read16(TSL2561_REGISTER_LUX);
+       //uint32_t testemp;
+       //BME280_goForceMode();
+       //testemp = BME280_readTemperature();
+       //UART1_SendStr("Temperature : %d \r\n");
+       //printf("Temperature : %d \r\n",testemp/100);
+       //TSL2561_write8(TSL2561_REGISTER_LUX,POWER_ON);
+       //luxValue = TSL2561_read16(TSL2561_REGISTER_LUX);
        UART1_SendStr("coucou interruption!!!\n");
-       UART1_SendDec(luxValue);
+       //UART1_SendDec(luxValue);
        //---------------------------------------------------------------
        RX_byte = EUSART_Read();
-       if(RX_byte == 0x0D) // si le caractere est "entrée"
+       if(RX_byte == 0x0A) // si le caractere est "\n"
        {
           
           interpretation(); 

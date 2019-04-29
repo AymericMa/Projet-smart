@@ -9,13 +9,14 @@
 
 void interpretation(void)
 {
-    uint8_t i ;
-    monBuffer.len = 0; 
+    uint8_t i;
+     
     printf("la commande est : \r\n");
-    for(i=0;i<3;i++)
+    for(i=0;i<RX_BUFFER_SIZE;i++)
     {
         printf(" %c",monBuffer.data[i]);
     }
+    monBuffer.len = 0;
 }
 
 void InitBME280andPowerDown(void)
