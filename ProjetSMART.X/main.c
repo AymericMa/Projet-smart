@@ -38,128 +38,48 @@
 #include "app.h"
 
 //variables globales
-  uint16_t  lux ;
-  float temperature ; 
-  float humidity ;
-  float pressure ;
-uint8_t tx_address1[5] = {0xE7,0xE7,0xE7,0xE7,0xE7};
-uint8_t rx_address1[5] = {0xD7,0xD5,0xD7,0xD7,0xD7};
-
-uint8_t device_address[5] = {0xAA,0xBB,0xCC,0xDD,0xEE};
-
-uint16_t luxValue;
-uint16_t DataLow;
-uint16_t DataHigh;
-uint32_t Data;
-float temperature;
-float humidite;
-float pression;
-uint32_t testemp;
+    float f_temp;
+    float f_humi;
+    float f_press;
+    bool FlaginterruptRx=0;
 
 void main()
 {
-    
-    TRISCbits.TRISC5 = 0;
     SYSTEM_Initialize();
-    
     __delay_ms(2000);
-    //InitBME280andPowerDown();
-    //Init_RF_andPowerDown(20,PAYLOAD_LEN,tx_address1,rx_address1);
-    //nrf24_displayConfiguration(1);
     
-    
-    
-    //PORTCbits.RC3 = 0 ;  
-    // CLRWDT();
-     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    //SYSTEM_Initialize();
-    //__delay_ms(2000);
-    
-    //EnableRXInterupts();
-    
-    //EnablePeripheralInterupts();
-    //SSP1MSK = 0x00;
-    // IOCANbits.IOCAN5 = 1;
+    // Init sensors-----------------------------------------------------------
     //TSL2561_write8(TSL2561_COMMAND_BIT,POWER_ON);
     InitBME280andPowerDown();
     readSensorCoefficients();
-     
+    //------------------------------------------------------------------------
     
-    //PORTCbits.RC3 = 0 ;  
-    //CLRWDT();
-    //SLEEP();
-   
-    
-    //bufferI2c=TSL2561_read16(0x0C);
+    //Init interrupt ---------------------------------------------------------
     EnableGlobalinterupts();
     EnablePeripheralInterupts();
     EnableRXInterupts();
-        
+    // -----------------------------------------------------------------------
             
 	while(1)
 	{   
-        __delay_ms(1000);
+        CPUDOZEbits.IDLEN = 1;
+        SLEEP();
         
+        if (FlaginterruptRx==1){
         
-        //CLRWDT();
-        //CPUDOZEbits.IDLEN = 1;
-        //SLEEP();
-
- 
+            BME280_goForceMode();
+            f_temp = BME280_readTemperature();
+            f_humi = BME280_readHumidity();
+            //f_press = BME280_readPressure();
+            char Stockage[12];
+            sprintf(Stockage,"%0.2f Deg / %0.2f \n",f_temp,f_humi);
+            UART1_SendStr(Stockage);
+            __delay_ms(40);
+            FlaginterruptRx=0;
+        }
         
-        UART1_SendStr("n");
-        
-        
-        //DataLow=TSL2561_read8(0x8C);
-        //Data=TSL2561_read16(0xAC);
-        //DataHigh=TSL2561_read8(0x8D);
-        //Data = (256*DataHigh)+DataLow;
-        //Data = (40000*Data)/65535;
-        //luxValue=bufferI2c;
-        //luxValue=(40000*bufferI2c)/65535;
-        
-        
-        //Bme280_OneMeasure(&temperature,&humidite,&pression);
-        //printf("Lux : %d \r\n",Data);
-        
-        BME280_goForceMode();
-        testemp = BME280_readTemperature();
-        printf("Temperature : %d \r\n",testemp/100);
-        //printf("Humidite : %d \r\n",humidite);
-        //printf("Pression : %d \r\n",pression);
-        //PORTCbits.RC3 = 1 ;
-        
-        //luxValue = TSL2561_read16(TSL2561_COMMAND_BIT | TSL2561_WORD_BIT | TSL2561_REGISTER_CHAN1_LOW);
-        //printf("Lux : %d \r\n",luxValue);
-        //UART1_SendHex(luxValue);
-        //CLRWDT();
-        //Bme280_OneMeasure(&temperature,&humidity,&pressure);
-        
-            
-       //CPUDOZEbits.IDLEN = 1;
-       //SLEEP();// go dodo , le watchdog doit nous reveiller dans 8 secondes
-
-     //  printf("Lux : %d \r\n",LireLux(1));
+        __delay_ms(4000);
+        UART1_SendStr("AT+SLEEP");
      
-      // PORTCbits.RC3 = 1 ; 
-      //  set_csn(0,1);
-      //__delay_ms(500);
-      // PORTCbits.RC3 = 0 ;
-        //set_csn(1,1);
-      // __delay_ms(500); 
-     
-     
-      
-      
     }
 }

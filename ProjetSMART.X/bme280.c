@@ -201,7 +201,7 @@ float BME280_readTemperature(void)
     
     temperature  = (t_fine * 5 + 128) >> 8;
     
-    //temperature = temperature / 100;
+    temperature = temperature / 100;
     
     return temperature ;
     

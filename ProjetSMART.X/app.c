@@ -5,19 +5,6 @@
  buffer monBuffer;
 
  Airbuffer TXbuffer;
- 
-
-void interpretation(void)
-{
-    uint8_t i;
-     
-    printf("la commande est : \r\n");
-    for(i=0;i<RX_BUFFER_SIZE;i++)
-    {
-        printf(" %c",monBuffer.data[i]);
-    }
-    monBuffer.len = 0;
-}
 
 void InitBME280andPowerDown(void)
 {
@@ -33,73 +20,5 @@ void Bme280_OneMeasure(float *temp,float * humi,float *press)
      *temp = BME280_readTemperature();
      *humi = BME280_readHumidity();
      *press = BME280_readPressure();
-}
-
-
-void AddTXfloat(float the_float)
-{
-    uint8_t i ;
-    union unpackFloat pack1;
-    pack1.f = the_float ; 
-    for(i=0;i<3;i++)
-    {
-        TXbuffer.data[TXbuffer.len] = pack1.b[i];
-        TXbuffer.len++;
-    }
-}
-
-void AddTX_U16(uint16_t value )
-{
-    /* uint8_t i ;
-    union unpackU16 pack1;
-    pack1.u = value ; 
-    for(i=0;i<2;i++)
-    {
-        TXbuffer.data[TXbuffer.len] = pack1.b[i];
-        TXbuffer.len++;
-    }*/
-   
-    
-}
-
-void AddTXAddr(uint8_t *addr)
-{
-    /*uint8_t i ;
-    for(i=0;i<nrf24_ADDR_LEN;i++)
-    {
-      TXbuffer.data[TXbuffer.len] = addr[i];
-      TXbuffer.len++;  
-    }*/
-    
-    
-}
-
-void PushDataInTheAir(void)
-{
-    /*
-    nrf24_send(TXbuffer.data,1);        
-    TXbuffer.len = 0 ;   
-        uint8_t temp ;
-        while(nrf24_isSending(1));
-
-   
-        temp = nrf24_lastMessageStatus(1);
-
-        if(temp == NRF24_TRANSMISSON_OK)
-        {                    
-           UART1_SendStr("> Tranmission went OK\r\n");
-        }
-        else if(temp == NRF24_MESSAGE_LOST)
-        {                    
-            UART1_SendStr("> Message is lost ...\r\n");    
-        }
-        
-        //temp = nrf24_retransmissionCount(1);
-		UART1_SendStr("> Retranmission count:");
-        UART1_SendDec(temp);
-		UART1_SendStr("\r\n"); 
-        __delay_ms(1);
-        //nrf24_powerDown(1);
-        */
 }
 

@@ -5,9 +5,6 @@
 
 
 
-
-
-
 inline void EnableGlobalinterupts(void);
 inline void DisableGlobalinterupts(void);
 inline void EnablePeripheralInterupts(void);

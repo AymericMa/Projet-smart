@@ -2,10 +2,9 @@
 #include <pic16f18325.h>
 #include "interupt.h"
 #include "app.h"
-
+extern bool FlaginterruptRx;
 extern buffer monBuffer ;
 unsigned char RX_byte ;
-uint16_t luxValue;
 
 inline void EnableGlobalinterupts(void)
 {
@@ -40,36 +39,11 @@ inline void DisableRXInterupts(void)
 
 void __interrupt() interupt1(void)
 {
-    UART1_SendStr("coucou prout!!!\n");
+    //UART1_SendStr("coucou prout!!!\n");
     if(PIR1bits.RCIF) // si ils'agit d'une interuption RX
-    {
-       //---------------------------------------------------------------
-       //uint32_t testemp;
-       //BME280_goForceMode();
-       //testemp = BME280_readTemperature();
-       //UART1_SendStr("Temperature : %d \r\n");
-       //printf("Temperature : %d \r\n",testemp/100);
-       //TSL2561_write8(TSL2561_REGISTER_LUX,POWER_ON);
-       //luxValue = TSL2561_read16(TSL2561_REGISTER_LUX);
-       UART1_SendStr("coucou interruption!!!\n");
-       //UART1_SendDec(luxValue);
-       //---------------------------------------------------------------
+    {  
+       FlaginterruptRx = 1;
        RX_byte = EUSART_Read();
-       if(RX_byte == 0x0A) // si le caractere est "\n"
-       {
-          
-          interpretation(); 
-       }
-       else // sinon on le stock
-       {
-           //printf("stock");
-           monBuffer.data[monBuffer.len] = RX_byte; //on stock
-           monBuffer.len++; //on incremente la position du buffer
-            if(monBuffer.len > RX_BUFFER_SIZE) // si le buffer est plein les caractere suivant ecraserons les autres 
-            {
-                monBuffer.len = 0 ;
-            }
-       }
     }
 
     //autres interuptions ici !   
