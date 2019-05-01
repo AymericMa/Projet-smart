@@ -59,7 +59,10 @@ void main()
     EnablePeripheralInterupts();
     EnableRXInterupts();
     // -----------------------------------------------------------------------
-            
+    
+    //__delay_ms(40);
+    //UART1_SendStr("AT+PWRM1");
+    
 	while(1)
 	{   
         CPUDOZEbits.IDLEN = 1;
@@ -78,7 +81,7 @@ void main()
             FlaginterruptRx=0;
         }
         
-        __delay_ms(4000);
+        __delay_ms(2000);
         UART1_SendStr("AT+SLEEP");
      
     }
